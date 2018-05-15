@@ -75,9 +75,9 @@ ProjectServer.prototype.tile = function (z, x, y, res) {
         scale = yels[1] ? parseInt(yels[1], 10) : 1,
         mapScale = scale * (this.project.mml.scale || 1),
         size = this.project.tileSize() * scale;  // retina?
-    mapPool = scale === 2 ? this.retinaPool : this.mapPool;
-    mapPool.acquire(function (err, map) {
-        var release = function () {mapPool.release(map);};
+    pool = scale === 2 ? this.retinaPool : this.mapPool;
+    pool.acquire(function (err, map) {
+        var release = function () {pool.release(map);};
         if (err) return self.raise(err.message, res);
         var tileClass = self.project.mml.source ? VectorBasedTile : self.project.metatile() === 1 ? Tile : MetatileBasedTile;
         var tile = new tileClass(z, x, y, {size: size, metatile: self.project.metatile(), mapScale: mapScale});
